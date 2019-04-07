@@ -37,7 +37,7 @@ var emojiDict = [
 ]
 var wordToLookup = "death"
 var meaning = emojiDict[wordToLookup]
-//the reason why meaning is optional is because if we try to access a key which doesn't exist in the dict, then we will be accessing a nil value, causing an app crash. So be default they are nil. in order to use it, we can use optional binding (given below)
+//the reason why meaning is optional is because if we try to access a key which doesn't exist in the dict, then we will be accessing a nil value, causing an app crash. So by default they are nil. in order to use it, we can use optional binding (given below)
 print(meaning)
 
 if let meaning = meaning{
