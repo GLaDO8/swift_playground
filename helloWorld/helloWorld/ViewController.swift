@@ -1,11 +1,3 @@
-//
-//  ViewController.swift
-//  helloWorld
-//
-//  Created by shreyas gupta on 4/7/19.
-//  Copyright © 2019 shreyas gupta. All rights reserved.
-//
-
 import UIKit
 
 class ViewController: UIViewController {
