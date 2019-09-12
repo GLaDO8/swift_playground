@@ -1,3 +1,4 @@
+//base swift tutorial code
 import UIKit
 
 //var is for variables and let is for constants
@@ -6,11 +7,11 @@ var x = 2
 var y = x + c
 x = 3
 var cased = "ssssweiefe"
-cased.uppercased()
-cased.count
-
+print(cased.uppercased())
+print(cased.count)
 //string concate using string interpolations
 var hell = "deijei \(cased)"
+print(hell)
 
 //if else loops
 if x == 2{
