@@ -3,6 +3,13 @@ import UIKit
 
 //var is for variables and let is for constants
 //default data type in swift is double.
+//swift has type safety and type inference. If the type is given, then good, else swift will automatically infer the type. The less type inference swift has to do, the faster the code compilation would be.
+
+// this is not good.
+var thisIsArray = ["23424", "egdrg", "fsger"]
+//this is good
+var ThisArray: [String] = ["23424", "egdrg", "fsger"]
+
 let c = 10
 var x = 2
 var y = x + c
@@ -90,11 +97,34 @@ if opt != nil{
 if let opt = opt{
     print(opt)
 }
-
+//functions
+//in Swift, all parameters are passed in as constants. We can't change them.
 func checkFunc(argLabel label:String) -> Int{
     print(label)
     return 0
 }
+
+//if you want to pass a value which can be changed inside the function and the result is available outside, we can use inout.
+func doubleInt(_ number: inout Int){
+    number*=2
+}
+var dblNum = 10
+doubleInt(&dblNum) //we need to put an ampersand, which signifies we are passing in a address.
+print(dblNum)
+
+//Variadic functions
+//variadic functions accept any number of parameters
+//To make the function accept any number of parameters, we use ... after the parameter type.
+//Note that we add a '_' before any parameter in order to avoid mentioning the label while calling the function.
+//We can have atmost 1 variadic parameter.
+func sum(_ numbers: Int...) -> Int{
+    var Sum = 0
+    for num in numbers{
+        Sum+=num
+    }
+    return Sum
+}
+print(sum(2,3,4,5,6))
 
 class Employee{
     var salary = 0
@@ -166,4 +196,13 @@ let optional2: String!
 //in this, swift will automatically assign a nil for us. Use this if you WANT it to be nil at first.
 let optional1: String?
 
+//Closures in swift are like lambda functions in other languages.
+//functions are basically named closures.
+//closure syntax
+//we start the body of the closure using the 'in' keyword
+var names = ["hello", "how", "are", "you"]
+var resultName = names.sorted(by: {(s1: String, s2: String) -> Bool in
+    return s1 > s2
+})
+//swfit can infer type of the closure
 
