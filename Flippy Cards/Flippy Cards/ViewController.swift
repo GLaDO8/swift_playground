@@ -11,29 +11,53 @@ import UIKit
 class ViewController: UIViewController {
 
     //initialise our game model
-    lazy var game = GameModel(numberOfCards: (cardArr.count + 1)/2)
-    //we create an array of UIButton objects in the viewcontroller. These are card abstractions in the controller section. The same abstraction in the model is a card Object.
-    @IBOutlet var cardArr: [UIButton]!
-    var emojiArr1 = ["👻", "💀", "🎃", "👹", "😈", "👽", "⚰️", "🕸", "🧟‍♂️", "🦇"]
-    var emojiDict = [Int: String]()
+    private lazy var game = GameModel(numberOfCards: (cardArr.count + 1)/2)
     
-    @IBOutlet weak var scoreLabel: UILabel!
-    @IBAction func cardClick(_ sender: UIButton) {
+    //only readable by others
+    private(set) var flipCount: Int = 0{
+        didSet{
+            updateFlipCountLabels()
+        }
+    }
+    //function to update flipcount
+    private func updateFlipCountLabels(){
+        let attributes: [NSAttributedString.Key: Any] = [
+            .strokeWidth: 5.0,
+            .strokeColor: #colorLiteral(red: 1, green: 0, blue: 0.3095360994, alpha: 1)
+        ]
+        let attributedString = NSAttributedString(string: "FlipCount: \(flipCount)", attributes: attributes)
+        //setting our flipcountlabel's attributes with the new string
+        flipCountLabel.attributedText = attributedString
+    }
+    
+    //this is a outlet to control the flipcount label, the attributes of which are controlled using a NSattributedString
+    @IBOutlet weak var flipCountLabel: UILabel!{
+        didSet{
+            updateFlipCountLabels()
+        }
+    }
+    
+    //we create an array of UIButton objects in the viewcontroller. These are card abstractions in the controller section. The same abstraction in the model is a card Object.
+    @IBOutlet private var cardArr: [UIButton]!
+    private var emojiString = "👻💀🎃👹😈👽⚰️🕸🧟‍♂️🦇🩸👺"
+    private var emojiDict = [Card: String]()
+    @IBOutlet private weak var scoreLabel: UILabel!
+    @IBAction private func newGame(_ sender: UIButton) {
+        game = GameModel(numberOfCards: (cardArr.count + 1)/2)
+        emojiDict = [Card: String]()
+        emojiString = "👻💀🎃👹😈👽⚰️🕸🧟‍♂️🦇🩸👺"
+        updateAllCards()
+    }
+    @IBAction private func cardClick(_ sender: UIButton) {
         if let cardIndex = cardArr.index(of: sender){
             game.choosecard(chosenCardIndex: cardIndex)
             updateAllCards()
             scoreLabel.text = "SCORE: " + String(game.score)
         }
+        print(game.score)
+        flipCount+=1
     }
-    
-    @IBAction func newGame(_ sender: UIButton) {
-        game = GameModel(numberOfCards: (cardArr.count + 1)/2)
-        emojiDict = [Int: String]()
-        emojiArr1 = ["👻", "💀", "🎃", "👹", "😈", "👽", "⚰️", "🕸", "🧟‍♂️", "🦇", "🩸"]
-        updateAllCards()
-    }
-    
-    func updateAllCards(){
+    private func updateAllCards(){
         for card in cardArr.indices{
             if(game.cardsArr[card].isFaceUp){
                 cardArr[card].setTitle(setEmoji(for: game.cardsArr[card]), for: UIControl.State.normal)
@@ -45,14 +69,27 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    func setEmoji(for card: Card) -> String {
-        if emojiDict[card.id] == nil, emojiArr1.count > 0{
-            let randomIndex = Int(arc4random_uniform(UInt32(emojiArr1.count)))
-            emojiDict[card.id] = emojiArr1.remove(at: randomIndex)
+    //we want to make the cards directly hashable rather than using the identifier
+    private func setEmoji(for card: Card) -> String {
+        print(emojiString.count)
+        if emojiDict[card] == nil, emojiString.count > 0{
+            let randomStringIndex = emojiString.index(emojiString.startIndex, offsetBy: emojiString.count.arc4random)
+            emojiDict[card] = String(emojiString.remove(at: randomStringIndex))
         }
         //return if not nil, if nil return ?
-        return emojiDict[card.id] ?? "?"
+        return emojiDict[card] ?? "?"
     }
 }
 
+//extensions let you add meaningful additional properties or vars to an existing class even if you don't have any access to that class.
+extension Int{
+    var arc4random: Int{
+        if self > 0{
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0{
+            return -Int(arc4random_uniform(UInt32(abs(self))))
+        } else{
+            return 0
+        }
+    }
+}

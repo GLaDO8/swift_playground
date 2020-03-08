@@ -51,7 +51,7 @@ emptyArray.remove(at: 1)
 for a in arr {
     print(a)
 }
-for q in 0...arr.count - 1 {
+for q in 0..<arr.count - 1 {
     print (arr[q])
 }
 arr.count
@@ -204,5 +204,106 @@ var names = ["hello", "how", "are", "you"]
 var resultName = names.sorted(by: {(s1: String, s2: String) -> Bool in
     return s1 > s2
 })
-//swfit can infer type of the closure
+//swift can infer type of the closure
 
+//creating custom countable ranges
+for i in stride(from: 0.5, through: 10, by: 0.25){
+    print (i)
+}
+
+//tuples are good for multiple values in swift
+let x_tuple: (w: String, i: Int, v: Double) = ("Hello", 5, 5.76)
+
+//computed properties
+
+//normal properties are basic instance variables
+//computed properties are computed whenever someone calls it or assigns stuff to it
+//need to have both get and set
+var computed_property: Double {
+    get{
+        //get is called whenever computer_property is called
+        return 0
+    }
+    set(newValue){
+        
+    }
+}
+
+
+//enums in swift
+//enums are one of the four data structures - Classes, Structs, enums and protocol
+//enums are value type data structures like structs. they can only have a certain vars in it.
+enum fastFoodType{
+    case burger (numberOfPatties: Int)
+    case soda (String, sodaSize: containerSize) //String means it can be anything. //the name doesn't really matter that much for associated data
+    case frenchFries (friesSize: containerSize)
+}
+enum containerSize{
+    case large
+    case small
+}
+
+//setting enums
+//enums are like tuples. enums can be assigned a value only once, when initialised.
+//we can use type inference on either side of the equal sign
+let menuItem: fastFoodType = fastFoodType.burger(numberOfPatties: 3)
+
+//checking enum's state. We don't use equal to to check the enum's state, we use switch.
+//we can ignore the associated data if we want to when using switch in swift
+//we can ignore fastFoodType cause of type inference
+//we can use break to do nothing
+//we can use default for uninteresting cases
+//we don't have fallthrough by default. If any of the cases is succesfully matched, it will execute and break. In other languages it is possible
+switch menuItem {
+case fastFoodType.burger: print("It's a burger")
+case fastFoodType.frenchFries: break
+default:print("I don't care")
+}
+
+//we can access the associated data in switch using let keyword
+//the naming for let need not be same as the associated data declaration name.
+switch menuItem {
+case fastFoodType.burger(let numberOfPatties):
+    print("it has \(numberOfPatties) number of patties")
+default:
+    print("meh")
+}
+
+//enums can have methods and computed properties/vars but not stored properties
+enum bathItemType{
+    case soap (String)
+    case shampoo (String, bottleSize: Int) //String means it can be anything. //the name doesn't really matter that much for associated data
+    case scrub
+    
+    func bathableType(number: Int) -> Bool{
+        switch self{
+        case .shampoo, .soap: return true
+        case .scrub: return false
+        }
+    }
+}
+
+
+//looking at optionals as enums
+//optional is a generic type
+//optionals are generally nil, and the switching is done using ?, ! and all. This is basic syntactic sugar for switching.
+//its an enum with state none(nil) and state some(some generic type)
+
+//we use "?" to declare an optional
+var thisIsOptional: Int?
+ 
+//we can unwrap is using if let or ?? (defaults to a value if optional not set) the last being nil coalescing unwrapping
+
+//implicit unwrapping
+var yohoo: Int!
+
+
+//guard is syntactic sugar for if, which makes early returns more explicit and clear. 
+for i in 1...10
+{
+    guard i.isMultiple(of: 2) else {
+        continue
+    }
+
+    print(i)
+}

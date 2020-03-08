@@ -58,7 +58,7 @@ class ViewController: UIViewController
             }
         }
     }
-    
+     
     func setEmoji(for card: Card) -> String{
         //randomly pick a emoji from emojiArr
         print(card.id, card.isFaceUp)
