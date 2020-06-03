@@ -9,6 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    // INITIALISATIONS AND PROPERTY DECLARATIONS
 
     //initialise our game model
     private lazy var game = GameModel(numberOfCards: (cardArr.count + 1)/2)
@@ -42,6 +44,9 @@ class ViewController: UIViewController {
     private var emojiString = "👻💀🎃👹😈👽⚰️🕸🧟‍♂️🦇🩸👺"
     private var emojiDict = [Card: String]()
     @IBOutlet private weak var scoreLabel: UILabel!
+    
+    //FUNCTIONS
+    
     @IBAction private func newGame(_ sender: UIButton) {
         game = GameModel(numberOfCards: (cardArr.count + 1)/2)
         emojiDict = [Card: String]()

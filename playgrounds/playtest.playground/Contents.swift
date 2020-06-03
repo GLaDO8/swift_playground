@@ -29,7 +29,6 @@ else{
     print("yp")
 }
 
-
 //operations
 pow(2, 3)
 sqrt(8)
@@ -51,10 +50,19 @@ emptyArray.remove(at: 1)
 for a in arr {
     print(a)
 }
+//range is represented using '..'
 for q in 0..<arr.count - 1 {
     print (arr[q])
 }
 arr.count
+
+//creating custom countable ranges
+for i in stride(from: 0.5, through: 10, by: 0.25){
+    print (i)
+}
+
+//tuples are good for multiple values in swift
+let x_tuple: (w: String, i: Int, v: Double) = ("Hello", 5, 5.76)
 
 //dictionaries
 var emojiDict = [
@@ -85,19 +93,13 @@ if let meaning = meaning{
     container.addSubview(captionLabel)
 }
 
-//optionals and forced unwrapping
-var opt: String?
-opt = "hello"
-if opt != nil{
-    print(opt!)
-}
+var dblNum = 10
+doubleInt(&dblNum) //we need to put an ampersand, which signifies we are passing in a address.
+print(dblNum)
 
-//optionals and forced binding (recommended)
-//the opt after 'let' is a constant which is assigned with the value of the optional variable
-if let opt = opt{
-    print(opt)
-}
-//functions
+
+
+//MARK: - functions
 //in Swift, all parameters are passed in as constants. We can't change them.
 func checkFunc(argLabel label:String) -> Int{
     print(label)
@@ -108,11 +110,10 @@ func checkFunc(argLabel label:String) -> Int{
 func doubleInt(_ number: inout Int){
     number*=2
 }
-var dblNum = 10
-doubleInt(&dblNum) //we need to put an ampersand, which signifies we are passing in a address.
-print(dblNum)
 
-//Variadic functions
+
+
+// MARK:- Variadic functions
 //variadic functions accept any number of parameters
 //To make the function accept any number of parameters, we use ... after the parameter type.
 //Note that we add a '_' before any parameter in order to avoid mentioning the label while calling the function.
@@ -126,6 +127,10 @@ func sum(_ numbers: Int...) -> Int{
 }
 print(sum(2,3,4,5,6))
 
+//MARK: - Classes
+//classes in swift are primarily used for OOP. classes are reference types, in the sense, they are passed around by reference instead of being copied whenever passed as an argument or assigned to anything. They live in the heap and are removed when there aren't any pointers pointing to the class object.
+//classes require you to explicitely initialise every class property. It doesn't give you a free initialiser like for structs.
+//classes only have single inheritance
 class Employee{
     var salary = 0
     var workingHours = 0
@@ -158,63 +163,15 @@ class Manager: Employee{
     }
 }
 
-
 class XmasPresent {
     func surprise() -> Int {
         return Int.random(in: 1...10)
     }
 }
-//if you want to iniitalise a variable but not explicitely give it a value, you can use this keyword 'nil'. but you need to make sure that the type of the variable is explicitely mentioned as swift has type inference and nil has no innate type. the best way tp initialise is...This is a optional integer.
-//but even this will not work without the use of a '?'
-//this means the variable can now store as usual, or a nil.
-let present: XmasPresent? = XmasPresent()
-//as it is possible for the variable to contain nil, we need to explicitely check if it actually contains an object.
 
-//OPTIONAL UNWRAPPING
-//the if statement will just tell if there is a nil inside or not, but to access it, you need to unwrap it.
-//to unwrap it, we have to use a '!' mark after the variable.
-if (present != nil){
-    print(present!.surprise())
-}
 
-//OPTIONAL BINDING
-//here we use a if let statement to first check if the contents of the object are nil. if not, then the let statement will unwrap the object and assign it to a new constant for access.
-if let unwrappedPresent = present{
-    print(unwrappedPresent.surprise())
-}
 
-//OPTIONAL CHAINING
-//this will automatically check and execute the line if it is not nil. If it is nil, then the line won't be executed and the program will not crash.
-present?.surprise()
-
-//NOTE - swift by default assigns nil to variables which do not have any value assigned to them.
-
-//this is called implicitly unwrapped optional. you do not need to use extra '?' or '!' to unwrap them, swift will do it for you. But this is dangerous as it will allow you to run the code even if it's nil as it automatically unwraps it.
-//use this when you know that the variable will be nil ONLY initially.
-let optional2: String!
-
-//in this, swift will automatically assign a nil for us. Use this if you WANT it to be nil at first.
-let optional1: String?
-
-//Closures in swift are like lambda functions in other languages.
-//functions are basically named closures.
-//closure syntax
-//we start the body of the closure using the 'in' keyword
-var names = ["hello", "how", "are", "you"]
-var resultName = names.sorted(by: {(s1: String, s2: String) -> Bool in
-    return s1 > s2
-})
-//swift can infer type of the closure
-
-//creating custom countable ranges
-for i in stride(from: 0.5, through: 10, by: 0.25){
-    print (i)
-}
-
-//tuples are good for multiple values in swift
-let x_tuple: (w: String, i: Int, v: Double) = ("Hello", 5, 5.76)
-
-//computed properties
+//MARK: -computed properties
 
 //normal properties are basic instance variables
 //computed properties are computed whenever someone calls it or assigns stuff to it
@@ -224,13 +181,15 @@ var computed_property: Double {
         //get is called whenever computer_property is called
         return 0
     }
+    //newValue is the default keyword
     set(newValue){
         
     }
 }
 
 
-//enums in swift
+
+//MARK: - enums in swift
 //enums are one of the four data structures - Classes, Structs, enums and protocol
 //enums are value type data structures like structs. they can only have a certain vars in it.
 enum fastFoodType{
@@ -284,21 +243,49 @@ enum bathItemType{
 }
 
 
-//looking at optionals as enums
-//optional is a generic type
-//optionals are generally nil, and the switching is done using ?, ! and all. This is basic syntactic sugar for switching.
-//its an enum with state none(nil) and state some(some generic type)
 
-//we use "?" to declare an optional
+//MARK: - Optionals
+//optional is a generic type. optionals are generally nil, and the switching is done using ?, !. This is basic syntactic sugar for switching. Its an enum with state none(nil) as default and state some(some generic type)
+
+//we use "?" to declare an optional which is a syntactic sugar for declaring a enum with one state as none and other state as don't care or Int in this case. Swift automatically assigns 'nil' as the default value if we haven't initialised the variable
 var thisIsOptional: Int?
- 
-//we can unwrap is using if let or ?? (defaults to a value if optional not set) the last being nil coalescing unwrapping
 
-//implicit unwrapping
+//if you want to iniitalise a variable but not explicitely give it a value, you can use this keyword 'nil'. but you need to make sure that the type of the variable is explicitely mentioned as swift has type inference and nil has no innate type.
+let present: XmasPresent? = XmasPresent()
+
+
+//IMPLICIT UNWRAPPING or FORCED UNWRAPPING
+//is a way to unwrap the variable and get the value stored without switching on the enum. It works when the variable is set, and will crash your program if it is none. Can be used for bug testing. Use this when you know that the variable will be nil ONLY initially.
 var yohoo: Int!
 
+//OPTIONAL UNWRAPPING
+//the if statement will just tell if there is a nil inside or not, but to access it, you need to unwrap it.
+//to unwrap it, we have to use a '!' mark after the variable.
+if (present != nil){
+    print(present!.surprise())
+}
 
-//guard is syntactic sugar for if, which makes early returns more explicit and clear. 
+//OPTIONAL BINDING
+//here we use a if let statement to first check if the contents of the object are nil. if not, then the let statement will unwrap the object and assign it to a new constant for access.
+if let unwrappedPresent = present{
+    print(unwrappedPresent.surprise())
+}
+
+//OPTIONAL CHAINING
+//this will automatically check and execute the line if it is not nil. If it is nil, then the line won't be executed and the program will not crash.
+present?.surprise()
+
+//OPTIONAL DEFAULTING or NIL-COALESCING OPERATOR
+//this basically means, set opt2 as opt1 if it is something but if it is nil/none then set it to "foo"
+
+let opt1: String? = "hello"
+let opt2 = opt1 ?? "foo"
+
+
+
+// MARK: - Guard
+//guard is syntactic sugar for if, which makes early returns more explicit and clear.
+//syntactic sugar is when the functionality of the word is same as an already existing keyword, but makes the declaration more explicit for easier understanding.
 for i in 1...10
 {
     guard i.isMultiple(of: 2) else {
@@ -307,3 +294,65 @@ for i in 1...10
 
     print(i)
 }
+
+
+
+//MARK: - Delegation in swift
+struct Cookie{
+    var size: Int = 5
+    var hasChocoChips: Bool = true
+}
+
+//now the cookie needs to be sold on various platforms, but that is not the responsibility of the bakery, it just needs to delivery the cookies. This is where we use delegatin to encapsulate all the responsibilities that we are going to hand off to someone else. We use protocols to create delegates
+
+protocol bakeryDelegate{
+    //this function is called whenever a cookie is baked
+    func cookieWasBaked(_ cookie: Cookie)
+}
+
+//the bakery class is responsible for making the cookies using the cookie struct
+class Bakery{
+    
+    var delegate: bakeryDelegate?
+    func makeCookie(){
+        var cookie = Cookie()
+        cookie.size = 6
+        cookie.hasChocoChips = false
+        delegate?.cookieWasBaked(cookie)
+    }
+    
+}
+
+
+
+//MARK:- closures
+// closures are basically inline functions
+//NOTE: When we capture a variable and change its value inside the closure, we affect its value also outside the closure scope once the closure is called
+
+//various forms of closure
+//closure is basically everything about a function except it's name, inside the parameters of another function
+// In the following examples pairInt is a single element capture list
+
+func doSomething(thisIsParam: Int, thisIsAnother: (Int) -> String){
+}
+
+//1 - the curly brace has to contain the entire inline function and the function body should start after the "in" keyword.
+doSomething(thisIsParam: 2, thisIsAnother: {(pairInt: Int) -> String in
+    return "❤️"
+    })
+
+//2 - we don't need to explicitely mention the types as it is already present in doSomething function declaration. Swift can infer it.
+doSomething(thisIsParam: 2, thisIsAnother: {(pairInt) in
+    return "❤️"
+})
+
+//3 - we can omit the paranthesis over pairInt too
+doSomething(thisIsParam: 2, thisIsAnother: {pairInt in
+    return "❤️"
+})
+
+//4 - we can omit the return as it is a one line function
+doSomething(thisIsParam: 2, thisIsAnother: { pairInt in "❤️" })
+
+//5 - As the curly brace is the last argument, we can get rid of the keyword and put the curly brace outside
+doSomething(thisIsParam: 2) { pairInt in "❤️" }
